@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,7 +21,6 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 public class User {
 	
@@ -34,6 +34,22 @@ public class User {
 	
 	private String email;
 	
-	@OneToMany(mappedBy = "reservation_owner", cascade = CascadeType.REFRESH)
+	private String username;
+	
+	@OneToMany(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = true, fetch = FetchType.EAGER)
 	private final List<Reservation> reservations = new ArrayList<Reservation>();
+
+	private List<Long> getResIds() {
+		List<Long> resId = new ArrayList<Long>();
+		reservations.forEach(r -> resId.add(r.getId()));
+		return resId;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", lastname=" + lastname + ", email=" + email + ", username="
+				+ username + ", reservationsId's=" + getResIds() + "]";
+	}
+	
+	
 }
