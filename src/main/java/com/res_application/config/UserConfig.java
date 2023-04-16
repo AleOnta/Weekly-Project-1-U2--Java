@@ -20,16 +20,19 @@ public class UserConfig {
 	@Scope("prototype")
 	public User fakeUser() {
 		Faker fake = Faker.instance(new Locale("it-IT"));
-		User u = User.builder()
-				.name(fake.name().firstName())
-				.lastname(fake.name().lastName())
-				.build();
+		String name = fake.name().firstName();
+		String lastname = fake.name().lastName();
+		String email = name + "." + lastname + "@example.com";
+		String username = name + "_" + lastname;
+		User u = User.builder().name(name).lastname(lastname).email(email).username(username).build();
 		return u;
 	}
 
 	@Bean("paramsUser")
 	@Scope("prototype")
 	public User paramsUser(String name, String lastname) {
-		return new User(null, name, lastname, name+"."+lastname+"@example.com");
+		String email =  name + "." + lastname + "@example.com";
+		String username = name + "_" + lastname;
+		return new User(null, name, lastname, email, username);
 	}
 }
