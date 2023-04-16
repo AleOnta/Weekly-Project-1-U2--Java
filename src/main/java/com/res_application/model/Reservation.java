@@ -4,9 +4,11 @@ import java.time.LocalDate;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -20,7 +22,6 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 public class Reservation {
 	
@@ -28,11 +29,20 @@ public class Reservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private User reservation_owner;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
+	private User owner;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "w_stat_id")
 	private Workstation location;
 
-	private final LocalDate reservation_date = LocalDate.now();
+	private LocalDate date;
+
+	@Override
+	public String toString() {
+		return "Reservation [id=" + id + ", owner=" + owner.getUsername() +"("+owner.getId()+")" + ", location=" + location.getId() + ", date=" + date + "]";
+	}
+	
+	
 }
