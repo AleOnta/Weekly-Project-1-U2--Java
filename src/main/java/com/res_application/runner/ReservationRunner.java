@@ -47,6 +47,8 @@ public class ReservationRunner implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
+		// PER CORREZIONE --> SCOMMENTARE DA RIGA 53 A RIGA 137 ALLA PRIMA RUN, PER POPOLARE IL DB, DOPO DI CHE' RI-COMMENTARE (ALMENTO L'ISTANZIAMENTO DEI BEAN CUSTOM E PARAMS)
+		
 		// USERS SECTION
 		/*
 		// creating a user custom:
